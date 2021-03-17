@@ -3,6 +3,7 @@
   position: absolute;
   min-height: 150vh;
   width: 100%;
+  background-color: #dddddd;
 }
 
 .App-logo {

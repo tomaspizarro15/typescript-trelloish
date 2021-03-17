@@ -18,6 +18,7 @@ const Header = (props: HeaderProps) => {
     } , [header])
 
 
+    
     const handleScroll = () => {
         if(!window.scrollY) {
             setHeader(false)
@@ -25,16 +26,14 @@ const Header = (props: HeaderProps) => {
             setHeader(true)
         }
     }
-
     window.addEventListener('scroll', handleScroll)
-
-
+ 
     return (
         <div className="header_wrapper">
             <div className={header ? "header dis" : "header" }>
                 <ul className="flex_ccr header_links"> {props.links.map((el, i, arr) => {
                     return (
-                        <li className="header_tools" key={el.id}>
+                        <li className={header ? "header_tools dis" : "header_tools"} key={el.id}>
                             <p>{el.label}</p>
                         </li>
                     )
