@@ -8,9 +8,13 @@ const Boards = (props: Object) => {
     interface Event<T> {
         EventTarget: EventTarget & T
     }
-    const [boards, setBoards] = useState([{ id: "mamau", key: "0", label: "tu tablero", cards: [{ key: "0", id: "0", label: "tu carta" }], newCard: "" }])
+    const [boards, setBoards] = useState([{ id: "mamau", key: "0", label: "tu tablero", cards: [{ key: Math.random().toString(), id: Math.random().toString(), label: "tu carta" }], newCard: "" }])
     const [input, setInput] = useState("");
     const [cardLabel, setCardLabel] = useState("nueva carta");
+
+
+    // Creacion / Modificacion de tablas!
+
     const changeInputValue = (e: React.FormEvent<HTMLInputElement>) => {
         setInput(e.currentTarget.value)
     }
@@ -34,19 +38,42 @@ const Boards = (props: Object) => {
     const createCard = (e: KeyboardEventInit, i: number) => {
         const newBoards = [...boards];
         if (e.keyCode === 13) {
-            newBoards[i].cards.push({ id: i.toString(), key: i.toString(), label: newBoards[i].newCard })
+            newBoards[i].cards.push({ id: Math.random().toString(), key: Math.random.toString(), label: newBoards[i].newCard })
             newBoards[i].newCard = "";
             setBoards([...newBoards])
         }
     }
     const changeCardLabel = (e: React.FormEvent<HTMLInputElement>, boardIndex: number, cardIndex: number) => {
-        const newBoards = [...boards]; 
+        const newBoards = [...boards];
         newBoards[boardIndex].cards[cardIndex].label = e.currentTarget.value;
         setBoards([...newBoards])
     }
 
     //Drag and Drop funcionalidad.
-    
+
+    const dragStart = (e: any) => {
+        const tg = e.target;
+        e.dataTransfer.setData('id', tg.id)
+        tg.style.display = "block"
+        setTimeout(() => {
+            tg.style.display = "none"
+        }, 0)
+    }
+    const dragStop = (e: any) => {
+        e.stopPropagation();
+    }
+    const dragOver = (e: any) => {
+        e.preventDefault();
+        console.log("Dragging over meee!")
+    }
+    const dropOn = (e: any) => {
+        e.preventDefault();
+        const newCardId = e.dataTransfer.getData('id')
+        const newCard: any = document.getElementById(newCardId)
+        newCard.style.display = 'block';
+        e.target.appendChild(document.getElementById(newCardId))
+    }
+
 
     return (
         <div className="main_container">
@@ -62,9 +89,9 @@ const Boards = (props: Object) => {
                 {boards.map((el, i) => {
                     return (
                         <li className="flex_ctc board" key={el.key} >
-                            <input className="board_label" value={el.label} onChange={(e) => {changeInputBoard(e , i)}}></input>
-                            <ul className="card_list">
-                                <div className="flex_ccc card">
+                            <input className="board_label" value={el.label} onChange={(e) => { changeInputBoard(e, i) }}></input>
+                            <ul className="card_list" onDrop={(e) => { dropOn(e) }} onDragOver={(e) => { dragOver(e) }}>
+                                <div className="flex_ccc card" onDrop={() => { return false }}>
                                     <input
                                         className="board_label_active"
                                         placeholder="nueva tarea..."
@@ -78,7 +105,9 @@ const Boards = (props: Object) => {
                                             key={card.key}
                                             id={card.id}
                                             label={card.label}
-                                            onChange={(e: any) =>{ changeCardLabel(e, i, j)}}
+                                            onChange={(e: any) => { changeCardLabel(e, i, j) }}
+                                            dragStart={(e: any) => { dragStart(e) }}
+                                            dragStop={(e: any) => { dragStop(e) }}
                                         />
                                     )
                                 })}
