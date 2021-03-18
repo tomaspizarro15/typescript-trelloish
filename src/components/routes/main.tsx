@@ -21,7 +21,11 @@ const Boards = (props: Object) => {
             setInput("")
         }
     }
-
+    const changeInputBoard = (e: React.FormEvent<HTMLInputElement>, index: number) => {
+        const newBoards = [...boards];
+        newBoards[index].label = e.currentTarget.value;
+        setBoards([...newBoards])
+    }
     const changeInputCard = (e: React.FormEvent<HTMLInputElement>, index: number) => {
         const newBoards = [...boards];
         newBoards[index].newCard = e.currentTarget.value;
@@ -35,6 +39,14 @@ const Boards = (props: Object) => {
             setBoards([...newBoards])
         }
     }
+    const changeCardLabel = (e: React.FormEvent<HTMLInputElement>, boardIndex: number, cardIndex: number) => {
+        const newBoards = [...boards]; 
+        newBoards[boardIndex].cards[cardIndex].label = e.currentTarget.value;
+        setBoards([...newBoards])
+    }
+
+    //Drag and Drop funcionalidad.
+    
 
     return (
         <div className="main_container">
@@ -42,7 +54,7 @@ const Boards = (props: Object) => {
             <input
                 value={input}
                 onChange={(e) => { changeInputValue(e) }}
-                className="board_label short black"
+                className="new_board__label"
                 onKeyUp={(e) => { newBoardInput(e) }}
                 placeholder="clear nuevo tablero"
             />
@@ -50,23 +62,23 @@ const Boards = (props: Object) => {
                 {boards.map((el, i) => {
                     return (
                         <li className="flex_ctc board" key={el.key} >
-                            <input className="board_label" value={el.label}></input>
+                            <input className="board_label" value={el.label} onChange={(e) => {changeInputBoard(e , i)}}></input>
                             <ul className="card_list">
                                 <div className="flex_ccc card">
                                     <input
                                         className="board_label_active"
-                                        placeholder="create card"
+                                        placeholder="nueva tarea..."
                                         onChange={(e) => { changeInputCard(e, i) }}
                                         value={el.newCard}
                                         onKeyUp={(e) => { createCard(e, i) }} />
                                 </div>
-                                {el.cards.map((card, i) => {
+                                {el.cards.map((card, j) => {
                                     return (
                                         <Card
                                             key={card.key}
                                             id={card.id}
                                             label={card.label}
-                                            onChange={(e: any) => changeInputCard(e, i)}
+                                            onChange={(e: any) =>{ changeCardLabel(e, i, j)}}
                                         />
                                     )
                                 })}
