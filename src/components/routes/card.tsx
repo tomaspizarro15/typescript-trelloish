@@ -13,6 +13,7 @@ const Card = (props: CardInterface) => {
     return (
         <div
             draggable="true"
+            onDropCapture= {() => {return false}}
             key={props.key}
             id={props.id}
             className="flex_ccr card"
