@@ -1,7 +1,10 @@
 .App {
+  display: flex;
   text-align: center;
+  align-items: center;
+  flex-direction: column;
   position: absolute;
-  min-height: 150vh;
+  min-height: 120vh;
   width: 100%;
   background-color: #dddddd;
 }
@@ -19,7 +22,6 @@
 
 .App-header {
   background-color: #282c34;
-
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -46,7 +48,18 @@
   align-items: center;
   flex-direction: row;
 }
-
+.flex_ctr {
+  display: flex;
+  justify-content: start;
+  align-items: center;
+  flex-direction: row;
+}
+.flex_ctc {
+  display: flex;
+  justify-content: start;
+  align-items: center;
+  flex-direction: column;
+}
 
 
 @keyframes App-logo-spin {

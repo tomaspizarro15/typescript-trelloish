@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 
 import './App.css';
+import Boards from './components/routes/main';
 import Header from './components/static/header/header';
 
 function App() {
@@ -14,7 +15,7 @@ function App() {
   return (
     <div className="App" onScroll={() => {console.log("Scrolling?")}}>
       <Header title="my header" links={header.links} />
-      
+      <Boards />
     </div>
   );
 }
